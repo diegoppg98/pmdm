@@ -1,22 +1,38 @@
 package com.diegoppg.proyectotema2;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.AlarmClock;
+import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.io.File;
 
 public class MainActivityLogin extends AppCompatActivity {
 
     final String USER="admin";
     final String PASS="12345";
-
+    Uri photoUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,24 +49,21 @@ public class MainActivityLogin extends AppCompatActivity {
         Button botonLogin = findViewById(R.id.buttonLogin);
         EditText editTextUsuario = findViewById(R.id.editTextUsuario);
         EditText editTextPass = findViewById(R.id.editTextPass);
+        ImageView imageViewFoto = findViewById(R.id.imageViewLogin);
+
 
 
         // 1. Lambda
         botonLogin.setOnClickListener(v -> {
-
-            //Toast toast = Toast.makeText(this, "Boton clicado", Toast.LENGTH_LONG);
-            //toast.show();
-            String msg = editTextUsuario.getText() + " : " + editTextPass.getText();
-
-            //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-
-
             //Pasar de una actividad a otra
             Intent intent = new Intent(this, ActivityProfile.class);
 
             String user = editTextUsuario.getText().toString();
             String pass = editTextPass.getText().toString();
 
+            //Pasar datos a la actividad perfil
+            intent.putExtra("username", user);
+            intent.putExtra("password", pass);
 
             if(user.equals(USER) && pass.equals(PASS)){
                 startActivity(intent);
@@ -64,6 +77,29 @@ public class MainActivityLogin extends AppCompatActivity {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+            //Toast toast = Toast.makeText(this, "Boton clicado", Toast.LENGTH_LONG);
+            //toast.show();
+            String msg = editTextUsuario.getText() + " : " + editTextPass.getText();
+
+            //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+
+
+
+
+*/
 
         });
 
