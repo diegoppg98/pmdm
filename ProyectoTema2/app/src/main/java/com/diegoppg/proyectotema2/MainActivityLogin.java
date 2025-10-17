@@ -53,6 +53,54 @@ public class MainActivityLogin extends AppCompatActivity {
 
 
 
+
+
+
+
+
+        ActivityResultLauncher<Intent> launcherFoto = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+
+                        if(result.getResultCode() == Activity.RESULT_OK)  {
+
+                        }
+                    }
+                });
+
+
+
+
+        ActivityResultLauncher<Intent> launcherFoto2 = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        if (photoUri != null) {
+                            // Mostrar la foto tomada en el ImageView
+                            imageViewFoto.setImageURI(photoUri);
+                            Toast.makeText(this, "📸 Foto capturada correctamente", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(this, "❌ Operación cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+
+
+
+
+
+
+
+
+
+
+
+
         // 1. Lambda
         botonLogin.setOnClickListener(v -> {
             //Pasar de una actividad a otra
@@ -81,6 +129,71 @@ public class MainActivityLogin extends AppCompatActivity {
 
 
 
+/*
+            //Alarma
+            Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+                    .putExtra(AlarmClock.EXTRA_MESSAGE, "Alarma")
+                    .putExtra(AlarmClock.EXTRA_HOUR, 20)
+                    .putExtra(AlarmClock.EXTRA_MINUTES, 30);
+
+            startActivity(intent);
+
+            //<uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+*/
+            //Calendar
+
+
+            //Camera
+
+/*
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.CAMERA},
+                        100
+                );
+            }
+
+
+            try {
+                File photoFile = new File(getExternalFilesDir(null), "photo.jpg");
+
+                // Usar FileProvider para crear la URI
+                photoUri = FileProvider.getUriForFile(
+                        this,
+                        getPackageName() + ".fileprovider",
+                        photoFile
+                );
+
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+
+                launcherFoto2.launch(intent);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Error al abrir la cámara", Toast.LENGTH_SHORT).show();
+            }
+
+*/
+
+
+
+            //<uses-permission android:name="android.permission.CAMERA" />
+
+
+
+
+
+
+
+
 
 
 
@@ -97,7 +210,19 @@ public class MainActivityLogin extends AppCompatActivity {
             //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 
 
+            //Pasar de una actividad a otra
+            Intent intent = new Intent(this, ActivityProfile.class);
 
+            String user = editTextUsuario.getText().toString();
+            String pass = editTextPass.getText().toString();
+
+
+            if(user.equals(USER) && pass.equals(PASS)){
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_LONG).show();
+            }
 
 */
 
@@ -112,6 +237,8 @@ public class MainActivityLogin extends AppCompatActivity {
                 Log.d("Prueba", "Boton clicado");
             }
         });
+
+
 
         //3. Creando listener
         View.OnClickListener listener = new View.OnClickListener() {
