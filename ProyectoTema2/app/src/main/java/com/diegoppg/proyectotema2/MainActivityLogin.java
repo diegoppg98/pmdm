@@ -78,6 +78,7 @@ public class MainActivityLogin extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
+
                         if (photoUri != null) {
                             // Mostrar la foto tomada en el ImageView
                             imageViewFoto.setImageURI(photoUri);

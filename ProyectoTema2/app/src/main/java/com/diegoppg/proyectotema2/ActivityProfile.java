@@ -16,11 +16,19 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.File;
+
 public class ActivityProfile extends AppCompatActivity {
+
+    Uri photoUri = null;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +97,12 @@ public class ActivityProfile extends AppCompatActivity {
         ActivityResultLauncher<Intent> launcherFoto = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getResultCode() == Activity.RESULT_OK && photoUri != null) {
+
                         //Dato recibido correctamente
-                        imageViewFoto.setImageURI(result.getData().getData());
+                        imageViewFoto.setImageURI(photoUri);
+
+
                         Toast.makeText(this, "📸 Foto capturada correctamente", Toast.LENGTH_SHORT).show();
 
                     } else {
@@ -102,7 +113,22 @@ public class ActivityProfile extends AppCompatActivity {
 
 
         imageViewFoto.setOnClickListener(view -> {
+
+            File photoFile = new File(getExternalFilesDir(null), "photo.jpg");
+
+            // Usar FileProvider para crear la URI
+            photoUri = FileProvider.getUriForFile(
+                    this,
+                    getPackageName() + ".fileprovider",
+                    photoFile
+            );
+
             Intent misco = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            misco.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            misco.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+
 
             launcherFoto.launch(misco);
         });
